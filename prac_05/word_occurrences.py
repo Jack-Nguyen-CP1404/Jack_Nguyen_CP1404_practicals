@@ -19,4 +19,3 @@ for word in text:
 # Print out words, frequency and formatting
 for word in text:
     print("{:{}} : {}".format(word, max_length, word_count[word]))
-
