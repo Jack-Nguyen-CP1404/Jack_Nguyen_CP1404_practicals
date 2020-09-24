@@ -25,5 +25,4 @@ class DynamicLabelsApp(App):
             self.root.ids.name_box.add_widget(label_name)
 
 
-
 DynamicLabelsApp().run()
