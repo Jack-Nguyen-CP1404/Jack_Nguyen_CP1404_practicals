@@ -9,7 +9,7 @@ def main():
     fancy_taxi_2 = SilverServiceTaxi("BMW", 100, 2)
     fancy_taxi_2.drive(18)
     print(fancy_taxi_2)
-    print(fancy_taxi_2.get_fare())
+    print("{:.2f}".format(fancy_taxi_2.get_fare()))
 
 
 main()
