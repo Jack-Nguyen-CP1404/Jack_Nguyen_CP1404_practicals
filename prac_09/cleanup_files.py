@@ -1,45 +1,37 @@
 """
-CP1404/CP5632 Practical
-Demos of various os module examples
+CP1404/CP5632 Practical_09
+Clean up files that have different namings to file name that contains "_" between each word and file extension is ".txt"
 """
-import shutil
+
 import os
 
 
 def main():
-    """Demo os module functions."""
-    print("Starting directory is: {}".format(os.getcwd()))
+    """Fix inconsistent file names."""
     os.chdir('Lyrics/Christmas')
-    try:
-        os.mkdir('temp')
-    except FileExistsError:
-        pass
-    for filename in os.listdir('.'):
-        if os.path.isdir(filename):
-            continue
-        new_name = get_fixed_filename(filename)
-        print("Renaming {} to {}".format(filename, new_name))
+
+    for directory_name, subdirectories, filenames in os.walk('.'):
+        for filename in filenames:
+            get_fixed_filename(filename)
+            new_name = get_fixed_filename(filename)
+            print("Renaming {} to {}".format(filename, new_name))
+            full_name = os.path.join(directory_name, filename)
+            new_name = os.path.join(directory_name, new_name)
+            os.rename(full_name, new_name)
 
 
 def get_fixed_filename(filename):
     """Return a 'fixed' version of filename."""
-    new_name = filename.replace(" ", "_").replace(".TXT", ".txt")
+    filename = filename.replace(" ", "_").replace(".TXT", ".txt")
+    words = []
+    current_position = 0
+    for next_position, letter in enumerate(filename):
+        if letter.isupper() and current_position < next_position:
+            words.append(filename[current_position:next_position])
+            current_position = next_position
+    words.append(filename[current_position:])
+    new_name = '_'.join(words).replace("__", "_").replace("(_", "(")
     return new_name
 
 
-def demo_walk():
-    """Process all subdirectories using os.walk()."""
-    os.chdir('Lyrics')
-    for directory_name, subdirectories, filenames in os.walk('.'):
-        print("Directory:", directory_name)
-        print("\tcontains subdirectories:", subdirectories)
-        print("\tand files:", filenames)
-        print("(Current working directory is: {})".format(os.getcwd()))
-        for filename in filenames:
-            full_name = os.path.join(directory_name, filename)
-            new_name = os.path.join(directory_name, get_fixed_filename(filename))
-            os.rename(full_name, new_name)
-
-
 main()
-
